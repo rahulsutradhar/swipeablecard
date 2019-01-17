@@ -1,7 +1,5 @@
 package get.basis.swipecarddemo;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +12,14 @@ import java.util.ArrayList;
 
 public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.ItemViewHolder> {
 
-    private Context context;
     private ArrayList<CardModel> cardModels;
 
-    public CardStackAdapter( Context context, ArrayList<CardModel> cardModels ) {
-        this.context = context;
+    /**
+     * Constructor
+     *
+     * @param cardModels
+     */
+    public CardStackAdapter( ArrayList<CardModel> cardModels ) {
         this.cardModels = cardModels;
     }
 
@@ -33,7 +34,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.Item
     @Override
     public void onBindViewHolder( @NonNull ItemViewHolder itemViewHolder, int position ) {
         ItemViewHolder itemViewHolder1 = (ItemViewHolder) itemViewHolder;
-        itemViewHolder1.setViews(cardModels.get(position), position);
+        itemViewHolder1.setViews(cardModels.get(position));
     }
 
     @Override
@@ -41,6 +42,9 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.Item
         return cardModels.size();
     }
 
+    /**
+     * Item View Holder Class
+     */
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView contentText;
 
@@ -49,7 +53,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.Item
             contentText = (TextView) itemView.findViewById(R.id.content_text);
         }
 
-        public void setViews( CardModel cardModel, int position ) {
+        public void setViews( CardModel cardModel ) {
 
             if ( cardModel == null ) {
                 return;

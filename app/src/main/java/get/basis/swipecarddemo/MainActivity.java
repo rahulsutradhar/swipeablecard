@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        //set up list data for the cards
         setupData();
+        //setup the cardview
         setupViews();
 
     }
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
      * Setting up data
      */
     private void setupData() {
-        for ( int i = 1; i <= 5; i++ ) {
+        for ( int i = 1; i <= 20; i++ ) {
             CardModel cardModel = new CardModel();
             cardModel.setCount(i);
             cardModel.setContent("This is card Number - " + i);
@@ -63,13 +65,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setup View
+     */
     private void setupViews() {
         manager = new CardStackLayoutManager(this, cardStackListener);
-        adapter = new CardStackAdapter(this, cardModels);
+        adapter = new CardStackAdapter(cardModels);
         cardStackView.setLayoutManager(manager);
         cardStackView.setAdapter(adapter);
 
-        //decorations
+        //decorations for the card
         manager.setStackFrom(StackFrom.Bottom);
         manager.setVisibleCount(3);
         manager.setTranslationInterval(4f);
@@ -79,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
         manager.setSwipeThreshold(0.3f);
 
         /**
-         * Swipe from Bottom, then it will rewind
+         * Swipe from Bottom on the lower panel, where button are availble,
+         * then it will rewind if available
          */
         bottomPanel.setOnTouchListener(new OnSwipeTouchListener(this) {
 
@@ -93,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Callback for CardView
+     */
     private CardStackListener cardStackListener = new CardStackListener() {
         @Override
         public void onCardDragging( Direction direction, float ratio ) {
@@ -129,17 +138,24 @@ public class MainActivity extends AppCompatActivity {
         switch ( view.getId() ) {
             case R.id.reset:
                 if ( adapter != null ) {
+                    //reset the list from top
                     adapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.rewind:
                 if ( manager != null ) {
+                    //rewind
                     cardStackView.rewind();
                 }
                 break;
         }
     }
 
+    /**
+     * Updates Counter or progress, When all the cards are seen, it is set to 0
+     *
+     * @param topPosition
+     */
     private void updateCounter( int topPosition ) {
         if ( topPosition >= cardModels.size() ) {
             counterTextView.setText(String.valueOf(0));
